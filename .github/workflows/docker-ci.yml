@@ -10,8 +10,8 @@ on:
 
 env:
   REGISTRY: docker.io
-  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  DOCKER_USERNAME: iamsajo
+  DOCKER_PASSWORD: Sajo@0000
   IMAGE_PREFIX: latest
 
 jobs:
