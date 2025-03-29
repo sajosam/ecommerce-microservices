@@ -25,12 +25,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Login to Docker Hub
-        run: echo "${{ env.DOCKER_PASSWORD }}" | docker login -u "${{ env.DOCKER_USERNAME }}" --password-stdin
+      - name: Configure Docker with Secret
+        run: |
+          echo "${{ secrets.DOCKER_USERNAME }}" > ~/.docker/config.json
 
       - name: Build Docker Image
-        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/${{ matrix.service }}:latest ${{ matrix.service }}
+        run: |
+          docker build -t ${{ env.REGISTRY }}/workshop/${{ matrix.service }}:latest ${{ matrix.service }}
 
-      - name: Push Docker Image (Only on Merge)
-        if: github.event_name == 'push'
-        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/${{ matrix.service }}:latest
+      - name: Push Docker Image
+        run: |
+          docker push ${{ env.REGISTRY }}/workshop/${{ matrix.service }}:latest
