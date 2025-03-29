@@ -46,7 +46,7 @@ func main() {
 		c.JSON(200, fetchData("http://nodejs-product:5004/products/"+productID))
 	})
 
-	r.GET("/all-details/:user_id", func(c *gin.Context) {
+	r.GET("/amaljyothi/:user_id", func(c *gin.Context) {
 		userID := c.Param("user_id")
 		c.JSON(200, gin.H{
 			"user":     fetchData("http://golang-user:5001/users/" + userID),
