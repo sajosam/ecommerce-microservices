@@ -1,0 +1,41 @@
+name: Microservices CI/CD
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+env:
+  REGISTRY: docker.io
+  DOCKER_USERNAME: iamsajo
+  DOCKER_PASSWORD: Sajo@0000  # ⚠️ Avoid hardcoding credentials
+  IMAGE_PREFIX: latest
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [fastapi-order, flask-payment, golang-main, golang-user, nodejs-product]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Print Docker Username and Password (For Debugging)
+        run: |
+          echo "Docker Username: $DOCKER_USERNAME"
+          echo "Docker Password: $DOCKER_PASSWORD"  # ⚠️ Be careful, this exposes the password in logs
+
+      - name: Login to Docker Hub
+        run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+      - name: Build Docker Image
+        run: docker build -t $REGISTRY/$IMAGE_PREFIX/${{ matrix.service }}:latest ${{ matrix.service }}
+
+      - name: Push Docker Image (Only on Merge)
+        if: github.event_name == 'push'
+        run: docker push $REGISTRY/$IMAGE_PREFIX/${{ matrix.service }}:latest
