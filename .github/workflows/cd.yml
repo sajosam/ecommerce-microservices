@@ -13,7 +13,7 @@ jobs:
       nodejs-product: ${{ steps.filter.outputs.nodejs-product }}
       golang-user: ${{ steps.filter.outputs.golang-user }}
       flask-payment: ${{ steps.filter.outputs.flask-payment }}
-      gateway: ${{ steps.filter.outputs.golang-main }}
+      golang-main: ${{ steps.filter.outputs.golang-main }}
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
@@ -28,7 +28,7 @@ jobs:
               - 'golang-user/**'
             flask-payment:
               - 'flask-payment/**'
-            gateway:
+            golang-main:
               - 'golang-main/**'
 
   build-and-push-fastapi-order:
@@ -166,7 +166,7 @@ jobs:
 
   build-and-push-gateway:
     needs: detect-changes
-    if: needs.detect-changes.outputs.gateway == 'true'
+    if: needs.detect-changes.outputs.golang-main == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
