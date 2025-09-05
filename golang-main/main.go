@@ -54,7 +54,7 @@ func main() {
 
 	// health check with custom msg
 	r.GET("/health", func(c *gin.Context) {
-		c.JSON(200, gin.H{"status": "ok", "message": "Gateway is running"})
+		c.JSON(200, gin.H{"status": "ok", "message": "Gateway is running, health check"})
 	})
 
 	r.Run(":5000")

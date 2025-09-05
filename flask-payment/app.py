@@ -13,7 +13,7 @@ def get_payments(user_id):
 
 @app.route("/health")
 def health_check():
-    return {"status": "ok", "message": "Payment service is running on port 5003"}
+    return {"status": "ok", "message": "Payment service is running on port 5003, health check"}
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5003)

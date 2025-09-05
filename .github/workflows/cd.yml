@@ -73,7 +73,7 @@ jobs:
 
           # Pull latest changes and rebase before pushing
           git pull --rebase origin main || true
-          git push origin HEAD:main
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/sajosam/ecommerce-microservices.git HEAD:main
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
@@ -118,7 +118,9 @@ jobs:
 
           # Pull latest changes and rebase before pushing
           git pull --rebase origin main || true
-          git push origin HEAD:main
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/sajosam/ecommerce-microservices.git HEAD:main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
 
   build-and-push-golang-user:
@@ -159,7 +161,7 @@ jobs:
 
           # Pull latest changes and rebase before pushing
           git pull --rebase origin main || true
-          git push origin HEAD:main
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/sajosam/ecommerce-microservices.git HEAD:main
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
@@ -201,7 +203,7 @@ jobs:
 
           # Pull latest changes and rebase before pushing
           git pull --rebase origin main || true
-          git push origin HEAD:main
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/sajosam/ecommerce-microservices.git HEAD:main
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
@@ -243,6 +245,6 @@ jobs:
 
           # Pull latest changes and rebase before pushing
           git pull --rebase origin main || true
-          git push origin HEAD:main
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/sajosam/ecommerce-microservices.git HEAD:main
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

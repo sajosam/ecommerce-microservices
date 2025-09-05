@@ -23,7 +23,7 @@ func main() {
 
 	// health check with custom msg
 	r.GET("/health", func(c *gin.Context) {
-		c.JSON(200, gin.H{"status": "ok", "message": "User service is running on port 5001"})
+		c.JSON(200, gin.H{"status": "ok", "message": "User service is running on port 5001, health check"})
 	})
 
 	r.Run(":5001")
