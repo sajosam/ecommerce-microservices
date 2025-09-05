@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: product
-        image: iamsajo/ecommerce-microservices-nodejs-product:latest
+        image: iamsajo/ecommerce-microservices-nodejs-product:9b29c3e02abfa76de75aeb63b1b54a869ac909b1
         ports:
         - containerPort: 5004
 ---
