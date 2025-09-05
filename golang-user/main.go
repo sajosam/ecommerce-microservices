@@ -21,5 +21,10 @@ func main() {
 		}
 	})
 
+	// health check with custom msg
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{"status": "ok", "message": "User service is running"})
+	})
+
 	r.Run(":5001")
 }

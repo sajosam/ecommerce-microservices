@@ -11,5 +11,9 @@ payments = {
 def get_payments(user_id):
     return jsonify(payments.get(user_id, {"error": "No payments found"}))
 
+@app.route("/health")
+def health_check():
+    return {"status": "ok", "message": "Payment service is running"}
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5003)

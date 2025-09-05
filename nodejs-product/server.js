@@ -11,4 +11,8 @@ app.get("/products/:product_id", (req, res) => {
   res.json(products[productId] || { error: "No products found" });
 });
 
+app.get("/health", (req, res) => {
+  res.json({ status: "ok", message: "Product service is running" });
+});
+
 app.listen(5004, () => console.log("Product service running on port 5004"));
