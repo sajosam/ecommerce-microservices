@@ -8,8 +8,8 @@ func main() {
 	r := gin.Default()
 
 	users := map[string]gin.H{
-		"1": {"id": 1, "name": "David"},
-		"2": {"id": 2, "name": "Ajce"},
+		"1": {"id": 1, "name": "David-User"},
+		"2": {"id": 2, "name": "Ajce-User"},
 	}
 
 	r.GET("/users/:id", func(c *gin.Context) {
