@@ -52,9 +52,9 @@ func main() {
 		c.JSON(200, fetchData("http://"+productService+"/products/"+productID))
 	})
 
-	// health check
+	// health check with custom msg
 	r.GET("/health", func(c *gin.Context) {
-		c.JSON(200, gin.H{"status": "ok"})
+		c.JSON(200, gin.H{"status": "ok", "message": "Gateway is running"})
 	})
 
 	r.Run(":5000")
