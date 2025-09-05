@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: payment
-        image: iamsajo/ecommerce-microservices-flask-payment:181b7e25353284e4f630de2c6d4c49885a465f2c
+        image: iamsajo/ecommerce-microservices-flask-payment:9b29c3e02abfa76de75aeb63b1b54a869ac909b1
         ports:
         - containerPort: 5003
 ---
