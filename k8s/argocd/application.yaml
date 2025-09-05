@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ecommerce-microservices
+  namespace: argocd   # ArgoCD always looks for Applications here
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/sajosam/ecommerce-microservices.git'
+    targetRevision: main         # change from HEAD → main (safer for prod)
+    path: k8s                    # points to your manifests
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default           # your microservices are deployed here
+  syncPolicy:
+    automated:
+      prune: true                # delete resources removed from Git
+      selfHeal: true             # reapply if config drifts
+    syncOptions:
+    - CreateNamespace=true       # auto-create namespace if missing

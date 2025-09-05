@@ -37,6 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -45,11 +46,24 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/fastapi-order:${{ github.sha }} ./fastapi-order
-          docker push ${{ secrets.DOCKER_USERNAME }}/fastapi-order:${{ github.sha }}
-      - name: Deploy
-        run: echo "👉 Add your deployment step here (kubectl/ecs/ssh etc.)"
+
+      - name: Build & Push Docker image
+        run: |
+          IMAGE=${{ secrets.DOCKER_USERNAME }}/fastapi-order:${{ github.sha }}
+          docker build -t $IMAGE ./fastapi-order
+          docker push $IMAGE
+
+      - name: Update Kubernetes manifest with new image
+        run: |
+          sed -i "s|image: .*/fastapi-order:.*|image: ${{ secrets.DOCKER_USERNAME }}/fastapi-order:${{ github.sha }}|g" k8s/microservices/order-svc.yaml
+
+      - name: Commit updated manifest
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add k8s/microservices/order-svc.yaml
+          git commit -m "Update fastapi-order image to ${{ github.sha }}"
+          git push
 
   build-and-push-nodejs-product:
     needs: detect-changes
@@ -65,11 +79,24 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/nodejs-product:${{ github.sha }} ./nodejs-product
-          docker push ${{ secrets.DOCKER_USERNAME }}/nodejs-product:${{ github.sha }}
-      - name: Deploy
-        run: echo "👉 Add your deployment step here"
+      
+      - name: Build & Push Docker image
+        run: |
+          IMAGE=${{ secrets.DOCKER_USERNAME }}/nodejs-product:${{ github.sha }}
+          docker build -t $IMAGE ./nodejs-product
+          docker push $IMAGE
+
+      - name: Update Kubernetes manifest with new image
+        run: |
+          sed -i "s|image: .*/nodejs-product:.*|image: ${{ secrets.DOCKER_USERNAME }}/nodejs-product:${{ github.sha }}|g" k8s/microservices/product-svc.yaml
+
+      - name: Commit updated manifest
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add k8s/microservices/product-svc.yaml
+          git commit -m "Update nodejs-product image to ${{ github.sha }}"
+          git push
 
   build-and-push-golang-user:
     needs: detect-changes
@@ -85,12 +112,25 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/golang-user:${{ github.sha }} ./golang-user
-          docker push ${{ secrets.DOCKER_USERNAME }}/golang-user:${{ github.sha }}
-      - name: Deploy
-        run: echo "👉 Add your deployment step here"
+      
+      - name: Build & Push Docker image
+        run: |
+          IMAGE=${{ secrets.DOCKER_USERNAME }}/golang-user:${{ github.sha }}
+          docker build -t $IMAGE ./golang-user
+          docker push $IMAGE
+      
+      - name: Update Kubernetes manifest with new image
+        run: |
+          sed -i "s|image: .*/golang-user:.*|image: ${{ secrets.DOCKER_USERNAME }}/golang-user:${{ github.sha }}|g" k8s/microservices/user-svc.yaml
 
+      - name: Commit updated manifest
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add k8s/microservices/user-svc.yaml
+          git commit -m "Update golang-user image to ${{ github.sha }}"
+          git push
+      
   build-and-push-flask-payment:
     needs: detect-changes
     if: needs.detect-changes.outputs.flask-payment == 'true'
@@ -105,12 +145,24 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/flask-payment:${{ github.sha }} ./flask-payment
-          docker push ${{ secrets.DOCKER_USERNAME }}/flask-payment:${{ github.sha }}
-      - name: Deploy
-        run: echo "👉 Add your deployment step here"
+
+      - name: Build & Push Docker image
+        run: |
+          IMAGE=${{ secrets.DOCKER_USERNAME }}/flask-payment:${{ github.sha }}
+          docker build -t $IMAGE ./flask-payment
+          docker push $IMAGE
   
+      - name: Update Kubernetes manifest with new image
+        run: |
+          sed -i "s|image: .*/flask-payment:.*|image: ${{ secrets.DOCKER_USERNAME }}/flask-payment:${{ github.sha }}|g" k8s/microservices/payment-svc.yaml
+
+      - name: Commit updated manifest
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add k8s/microservices/payment-svc.yaml
+          git commit -m "Update flask-payment image to ${{ github.sha }}"
+          git push
 
   build-and-push-gateway:
     needs: detect-changes
@@ -126,8 +178,21 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/gateway:${{ github.sha }} ./golang-main
-          docker push ${{ secrets.DOCKER_USERNAME }}/gateway:${{ github.sha }}
-      - name: Deploy
-        run: echo "👉 Add your deployment step here"
+      
+      - name: Build & Push Docker image
+        run: |
+          IMAGE=${{ secrets.DOCKER_USERNAME }}/gateway:${{ github.sha }}
+          docker build -t $IMAGE ./golang-main
+          docker push $IMAGE
+
+      - name: Update Kubernetes manifest with new image
+        run: |
+          sed -i "s|image: .*/gateway:.*|image: ${{ secrets.DOCKER_USERNAME }}/gateway:${{ github.sha }}|g" k8s/microservices/gateway.yaml
+
+      - name: Commit updated manifest
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add k8s/microservices/gateway.yaml
+          git commit -m "Update gateway image to ${{ github.sha }}"
+          git push
