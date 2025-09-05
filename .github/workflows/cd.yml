@@ -29,7 +29,7 @@ jobs:
             flask-payment:
               - 'flask-payment/**'
             gateway:
-              - 'gateway/**'
+              - 'golang-main/**'
 
   build-and-push-fastapi-order:
     needs: detect-changes
@@ -53,9 +53,9 @@ jobs:
           docker build -t $IMAGE ./fastapi-order
           docker push $IMAGE
 
-      - name: Update Kubernetes manifest with new image
+      - name: Update image tag in order-svc.yaml
         run: |
-          sed -i "s|image: .*/fastapi-order:.*|image: ${{ secrets.DOCKER_USERNAME }}/fastapi-order:${{ github.sha }}|g" k8s/microservices/order-svc.yaml
+          sed -i "s#${secrets.DOCKER_USERNAME}/fastapi-order:.*#${secrets.DOCKER_USERNAME}/fastapi-order:${{ github.sha }}#g" k8s/microservices/order-svc.yaml
 
       - name: Commit updated manifest
         run: |
@@ -86,16 +86,16 @@ jobs:
           docker build -t $IMAGE ./nodejs-product
           docker push $IMAGE
 
-      - name: Update Kubernetes manifest with new image
+      - name: Update image tag in product-svc.yaml
         run: |
-          sed -i "s|image: .*/nodejs-product:.*|image: ${{ secrets.DOCKER_USERNAME }}/nodejs-product:${{ github.sha }}|g" k8s/microservices/product-svc.yaml
+          sed -i "s#${secrets.DOCKER_USERNAME}/nodejs-product:.*#${secrets.DOCKER_USERNAME}/nodejs-product:${{ github.sha }}#g" k8s/microservices/product-svc.yaml
 
       - name: Commit updated manifest
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add k8s/microservices/product-svc.yaml
-          git commit -m "Update nodejs-product image to ${{ github.sha }}"
+          git commit -m "Update nodejs-product image to ${{ github.sha }}" || echo "No changes"
           git push
 
   build-and-push-golang-user:
@@ -119,9 +119,9 @@ jobs:
           docker build -t $IMAGE ./golang-user
           docker push $IMAGE
       
-      - name: Update Kubernetes manifest with new image
+      - name: Update image tag in user-svc.yaml
         run: |
-          sed -i "s|image: .*/golang-user:.*|image: ${{ secrets.DOCKER_USERNAME }}/golang-user:${{ github.sha }}|g" k8s/microservices/user-svc.yaml
+          sed -i "s#${secrets.DOCKER_USERNAME}/golang-user:.*#${secrets.DOCKER_USERNAME}/golang-user:${{ github.sha }}#g" k8s/microservices/user-svc.yaml
 
       - name: Commit updated manifest
         run: |
@@ -152,9 +152,9 @@ jobs:
           docker build -t $IMAGE ./flask-payment
           docker push $IMAGE
   
-      - name: Update Kubernetes manifest with new image
+      - name: Update image tag in payment-svc.yaml
         run: |
-          sed -i "s|image: .*/flask-payment:.*|image: ${{ secrets.DOCKER_USERNAME }}/flask-payment:${{ github.sha }}|g" k8s/microservices/payment-svc.yaml
+          sed -i "s#${secrets.DOCKER_USERNAME}/flask-payment:.*#${secrets.DOCKER_USERNAME}/flask-payment:${{ github.sha }}#g" k8s/microservices/payment-svc.yaml
 
       - name: Commit updated manifest
         run: |
@@ -185,9 +185,9 @@ jobs:
           docker build -t $IMAGE ./golang-main
           docker push $IMAGE
 
-      - name: Update Kubernetes manifest with new image
+      - name: Update image tag in gateway.yaml
         run: |
-          sed -i "s|image: .*/gateway:.*|image: ${{ secrets.DOCKER_USERNAME }}/gateway:${{ github.sha }}|g" k8s/microservices/gateway.yaml
+          sed -i "s#${secrets.DOCKER_USERNAME}/gateway:.*#${secrets.DOCKER_USERNAME}/gateway:${{ github.sha }}#g" k8s/microservices/gateway.yaml
 
       - name: Commit updated manifest
         run: |
