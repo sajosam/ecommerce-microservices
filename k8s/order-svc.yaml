@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: order
-        image: iamsajo/ecommerce-microservices-fastapi-order:latest
+        image: iamsajo/ecommerce-microservices-fastapi-order:9b29c3e02abfa76de75aeb63b1b54a869ac909b1
         ports:
         - containerPort: 5002
         env:
