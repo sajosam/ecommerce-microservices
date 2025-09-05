@@ -37,7 +37,7 @@ def get_orders(user_id: str):
 
 @app.get("/health")
 def health_check():
-    return {"status": "ok", "message": "Order service is running"}
+    return {"status": "ok", "message": "Order service is running on port 5002"}
 
 if __name__ == "__main__":
     import uvicorn
