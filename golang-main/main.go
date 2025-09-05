@@ -52,5 +52,10 @@ func main() {
 		c.JSON(200, fetchData("http://"+productService+"/products/"+productID))
 	})
 
+	// health check
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{"status": "ok"})
+	})
+
 	r.Run(":5000")
 }
