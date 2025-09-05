@@ -87,13 +87,13 @@ jobs:
       
       - name: Build & Push Docker image
         run: |
-          IMAGE=${{ secrets.DOCKER_USERNAME }}/nodejs-product:${{ github.sha }}
+          IMAGE=${{ secrets.DOCKER_USERNAME }}/ecommerce-microservices-nodejs-product:${{ github.sha }}
           docker build -t $IMAGE ./nodejs-product
           docker push $IMAGE
 
       - name: Update image tag in product-svc.yaml
         run: |
-          sed -i "s#image: .*/nodejs-product:.*#image: ${{ secrets.DOCKER_USERNAME }}/nodejs-product:${{ github.sha }}#g" k8s/product-svc.yaml
+          sed -i "s#image: .*/ecommerce-microservices-nodejs-product:.*#image: ${{ secrets.DOCKER_USERNAME }}/ecommerce-microservices-nodejs-product:${{ github.sha }}#g" k8s/product-svc.yaml
 
       - name: Commit updated manifest
         run: |
@@ -122,13 +122,13 @@ jobs:
       
       - name: Build & Push Docker image
         run: |
-          IMAGE=${{ secrets.DOCKER_USERNAME }}/golang-user:${{ github.sha }}
+          IMAGE=${{ secrets.DOCKER_USERNAME }}/ecommerce-microservices-golang-user:${{ github.sha }}
           docker build -t $IMAGE ./golang-user
           docker push $IMAGE
       
       - name: Update image tag in user-svc.yaml
         run: |
-          sed -i "s#image: .*/golang-user:.*#image: ${{ secrets.DOCKER_USERNAME }}/golang-user:${{ github.sha }}#g" k8s/user-svc.yaml
+          sed -i "s#image: .*/ecommerce-microservices-golang-user:.*#image: ${{ secrets.DOCKER_USERNAME }}/ecommerce-microservices-golang-user:${{ github.sha }}#g" k8s/user-svc.yaml
 
       - name: Commit updated manifest
         run: |
@@ -157,13 +157,13 @@ jobs:
 
       - name: Build & Push Docker image
         run: |
-          IMAGE=${{ secrets.DOCKER_USERNAME }}/flask-payment:${{ github.sha }}
+          IMAGE=${{ secrets.DOCKER_USERNAME }}/ecommerce-microservices-flask-payment:${{ github.sha }}
           docker build -t $IMAGE ./flask-payment
           docker push $IMAGE
   
       - name: Update image tag in payment-svc.yaml
         run: |
-          sed -i "s#image: .*/flask-payment:.*#image: ${{ secrets.DOCKER_USERNAME }}/flask-payment:${{ github.sha }}#g" k8s/payment-svc.yaml
+          sed -i "s#image: .*/ecommerce-microservices-flask-payment:.*#image: ${{ secrets.DOCKER_USERNAME }}/ecommerce-microservices-flask-payment:${{ github.sha }}#g" k8s/payment-svc.yaml
 
       - name: Commit updated manifest
         run: |
@@ -192,13 +192,13 @@ jobs:
       
       - name: Build & Push Docker image
         run: |
-          IMAGE=${{ secrets.DOCKER_USERNAME }}/gateway:${{ github.sha }}
+          IMAGE=${{ secrets.DOCKER_USERNAME }}/ecommerce-microservices-gateway:${{ github.sha }}
           docker build -t $IMAGE ./golang-main
           docker push $IMAGE
 
       - name: Update image tag in gateway.yaml
         run: |
-          sed -i "s#image: .*/ecommerce-microservices-golang-main:.*#image: ${{ secrets.DOCKER_USERNAME }}/ecommerce-microservices-golang-main:${{ github.sha }}#g" k8s/gateway.yaml
+          sed -i "s#image: .*/ecommerce-microservices-gateway:.*#image: ${{ secrets.DOCKER_USERNAME }}/ecommerce-microservices-gateway:${{ github.sha }}#g" k8s/gateway.yaml
 
       - name: Commit updated manifest
         run: |
