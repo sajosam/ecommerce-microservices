@@ -5,8 +5,8 @@ import os
 app = FastAPI()
 
 orders = {
-    "1": [{"id": 101, "user_id": 1, "item": "Laptop", "product_id": 1}],
-    "2": [{"id": 102, "user_id": 2, "item": "Phone", "product_id": 2}]
+    "1": [{"id": 101, "user_id": 1, "item": "Laptop", "product_id": 11}],
+    "2": [{"id": 102, "user_id": 2, "item": "Phone", "product_id": 22}]
 }
 
 USER_SERVICE_URL = f"http://{os.getenv('USER_SERVICE')}/users"

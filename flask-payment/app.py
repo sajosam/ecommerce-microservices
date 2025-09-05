@@ -3,8 +3,8 @@ from flask import Flask, jsonify
 app = Flask(__name__)
 
 payments = {
-    "1": [{"id": 1001, "user_id": 1, "amount": 10000, "status": "Completed"}],
-    "2": [{"id": 1002, "user_id": 2, "amount": 5000, "status": "Pending"}]
+    "1": [{"id": 1001, "user_id": 1, "amount": 100000, "status": "Completed"}],
+    "2": [{"id": 1002, "user_id": 2, "amount": 50000, "status": "Pending"}]
 }
 
 @app.route("/payments/<user_id>")
