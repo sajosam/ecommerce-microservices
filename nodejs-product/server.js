@@ -12,7 +12,7 @@ app.get("/products/:product_id", (req, res) => {
 });
 
 app.get("/health", (req, res) => {
-  res.json({ status: "ok", message: "Product service is running on port 5004, health check" });
+  res.json({ status: "ok", message: "Product service is running on port 5004" });
 });
 
 app.listen(5004, () => console.log("Product service running on port 5004"));
