@@ -107,8 +107,6 @@ jobs:
           sed -i "s#image: .*/ecommerce-microservices-nodejs-product:.*#image: ${{ secrets.DOCKER_USERNAME }}/ecommerce-microservices-nodejs-product:${{ github.sha }}#g" k8s/product-svc.yaml
 
       - name: Commit & Push updated manifest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
