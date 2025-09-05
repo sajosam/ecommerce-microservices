@@ -5,6 +5,9 @@ on:
   push:
     branches: [ main ]
 
+permissions:
+  contents: write
+
 jobs:
   detect-changes:
     runs-on: ubuntu-latest
@@ -64,6 +67,8 @@ jobs:
           git add k8s/microservices/order-svc.yaml
           git commit -m "Update fastapi-order image to ${{ github.sha }}"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
   build-and-push-nodejs-product:
     needs: detect-changes
@@ -97,6 +102,8 @@ jobs:
           git add k8s/microservices/product-svc.yaml
           git commit -m "Update nodejs-product image to ${{ github.sha }}" || echo "No changes"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
   build-and-push-golang-user:
     needs: detect-changes
@@ -130,7 +137,9 @@ jobs:
           git add k8s/microservices/user-svc.yaml
           git commit -m "Update golang-user image to ${{ github.sha }}"
           git push
-      
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
   build-and-push-flask-payment:
     needs: detect-changes
     if: needs.detect-changes.outputs.flask-payment == 'true'
@@ -163,6 +172,8 @@ jobs:
           git add k8s/microservices/payment-svc.yaml
           git commit -m "Update flask-payment image to ${{ github.sha }}"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
   build-and-push-gateway:
     needs: detect-changes
@@ -196,3 +207,5 @@ jobs:
           git add k8s/microservices/gateway.yaml
           git commit -m "Update gateway image to ${{ github.sha }}"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

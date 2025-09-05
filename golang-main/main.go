@@ -14,7 +14,7 @@ func fetchData(url string) interface{} {
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Println("Error fetching API Data Error:", err)
-		return gin.H{"error": "Failed to fetch API Data"}
+		return gin.H{"error": "Failed to fetch API Data Error"}
 	}
 	defer resp.Body.Close()
 
