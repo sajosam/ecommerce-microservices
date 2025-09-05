@@ -1,0 +1,118 @@
+# .github/workflows/cd.yml
+name: CD - Deploy to Docker Hub
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      fastapi-order: ${{ steps.filter.outputs.fastapi-order }}
+      nodejs-product: ${{ steps.filter.outputs.nodejs-product }}
+      golang-user: ${{ steps.filter.outputs.golang-user }}
+      flask-payment: ${{ steps.filter.outputs.flask-payment }}
+      gateway: ${{ steps.filter.outputs.golang-main }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            fastapi-order:
+              - 'fastapi-order/**'
+            nodejs-product:
+              - 'nodejs-product/**'
+            golang-user:
+              - 'golang-user/**'
+            flask-payment:
+              - 'flask-payment/**'
+            gateway:
+              - 'gateway/**'
+
+  build-and-push-fastapi-order:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.fastapi-order == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-order:${{ github.sha }} ./fastapi-order
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-order:${{ github.sha }}
+      - name: Deploy
+        run: echo "👉 Add your deployment step here (kubectl/ecs/ssh etc.)"
+
+  build-and-push-nodejs-product:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.nodejs-product == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-product:${{ github.sha }} ./nodejs-product
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-product:${{ github.sha }}
+      - name: Deploy
+        run: echo "👉 Add your deployment step here"
+
+  build-and-push-golang-user:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.golang-user == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/golang-user:${{ github.sha }} ./golang-user
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/golang-user:${{ github.sha }}
+      - name: Deploy
+        run: echo "👉 Add your deployment step here"
+
+  build-and-push-flask-payment:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.flask-payment == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/flask-payment:${{ github.sha }} ./flask-payment
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/flask-payment:${{ github.sha }}
+      - name: Deploy
+        run: echo "👉 Add your deployment step here"
+  
+
+  build-and-push-gateway:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.gateway == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/gateway:${{ github.sha }} ./golang-main
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/gateway:${{ github.sha }}
+      - name: Deploy
+        run: echo "👉 Add your deployment step here"

@@ -1,0 +1,72 @@
+# .github/workflows/ci.yml
+name: CI - Build Docker Images
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      fastapi-order: ${{ steps.filter.outputs.fastapi-order }}
+      nodejs-product: ${{ steps.filter.outputs.nodejs-product }}
+      golang-user: ${{ steps.filter.outputs.golang-user }}
+      flask-payment: ${{ steps.filter.outputs.flask-payment }}
+      gateway: ${{ steps.filter.outputs.golang-main }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            fastapi-order:
+              - 'fastapi-order/**'
+            nodejs-product:
+              - 'nodejs-product/**'
+            golang-user:
+              - 'golang-user/**'
+            flask-payment:
+              - 'flask-payment/**'
+            gateway:
+              - 'gateway/**'
+
+  build-fastapi-order:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.fastapi-order == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker build -t fastapi-order-test ./fastapi-order
+
+  build-nodejs-product:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.nodejs-product == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker build -t nodejs-product-test ./nodejs-product
+
+  build-golang-user:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.golang-user == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker build -t golang-user-test ./golang-user
+
+  build-flask-payment:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.flask-payment == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker build -t flask-payment-test ./flask-payment
+  
+  build-gateway:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.gateway == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker build -t gateway-test ./golang-main

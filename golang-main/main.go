@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,36 +25,31 @@ func fetchData(url string) interface{} {
 }
 
 func main() {
+	orderService := os.Getenv("ORDER_SERVICE")
 	r := gin.Default()
 
+	// Instead of calling all services, main now delegates to Order service
 	r.GET("/users/:id", func(c *gin.Context) {
 		userID := c.Param("id")
-		c.JSON(200, fetchData("http://golang-user:5001/users/"+userID))
+		c.JSON(200, fetchData("http://"+orderService+"/orders/"+userID))
 	})
 
+	// For debugging - you can still call each service directly if needed
 	r.GET("/orders/:id", func(c *gin.Context) {
 		orderID := c.Param("id")
-		c.JSON(200, fetchData("http://fastapi-order:5002/orders/"+orderID))
+		c.JSON(200, fetchData("http://"+orderService+"/orders/"+orderID))
 	})
 
 	r.GET("/payments/:id", func(c *gin.Context) {
 		paymentID := c.Param("id")
-		c.JSON(200, fetchData("http://flask-payment:5003/payments/"+paymentID))
+		paymentService := os.Getenv("PAYMENT_SERVICE")
+		c.JSON(200, fetchData("http://"+paymentService+"/payments/"+paymentID))
 	})
 
 	r.GET("/products/:id", func(c *gin.Context) {
 		productID := c.Param("id")
-		c.JSON(200, fetchData("http://nodejs-product:5004/products/"+productID))
-	})
-
-	r.GET("/amaljyothi/:user_id", func(c *gin.Context) {
-		userID := c.Param("user_id")
-		c.JSON(200, gin.H{
-			"user":     fetchData("http://golang-user:5001/users/" + userID),
-			"orders":   fetchData("http://fastapi-order:5002/orders/" + userID),
-			"payments": fetchData("http://flask-payment:5003/payments/" + userID),
-			"products": fetchData("http://nodejs-product:5004/products/" + userID),
-		})
+		productService := os.Getenv("PRODUCT_SERVICE")
+		c.JSON(200, fetchData("http://"+productService+"/products/"+productID))
 	})
 
 	r.Run(":5000")
