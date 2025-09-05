@@ -2,8 +2,8 @@ const express = require("express");
 const app = express();
 
 const products = {
-  "1": [{ id: 1, name: "Laptop", price: 1000 }],
-  "2": [{ id: 2, name: "Phone", price: 500 }],
+  "1": [{ id: 1, name: "Laptop", price: 10000 }],
+  "2": [{ id: 2, name: "Phone", price: 5000 }],
 };
 
 app.get("/products/:user_id", (req, res) => {
