@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: gateway
-        image: iamsajo/ecommerce-microservices-golang-main:308f6ee36f8414dd36a1385c627356c5668dddff
+        image: iamsajo/ecommerce-microservices-golang-main:1b36451fd783de22eaa63541e815d229de28fc6d
         ports:
         - containerPort: 5000
         env:
