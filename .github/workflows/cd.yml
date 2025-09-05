@@ -198,7 +198,7 @@ jobs:
 
       - name: Update image tag in gateway.yaml
         run: |
-          sed -i "s#image: .*/ecommerce-microservices-gateway:.*#image: ${{ secrets.DOCKER_USERNAME }}/ecommerce-microservices-golang-main:${{ github.sha }}#g" k8s/gateway.yaml
+          sed -i "s#image: .*/ecommerce-microservices-golang-main:.*#image: ${{ secrets.DOCKER_USERNAME }}/ecommerce-microservices-golang-main:${{ github.sha }}#g" k8s/gateway.yaml
 
       - name: Commit updated manifest
         run: |
